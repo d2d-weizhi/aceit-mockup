@@ -1,0 +1,1300 @@
+<html>
+
+<head>
+	<title>AceIt! Assignments</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #f8f9fa;
+		}
+
+		.nav-link {
+			position: relative;
+			transition: all 0.3s ease;
+		}
+
+		.nav-link::after {
+			content: '';
+			position: absolute;
+			bottom: -4px;
+			left: 0;
+			width: 0;
+			height: 3px;
+			background-color: #43A047;
+			transition: width 0.3s ease;
+		}
+
+		.nav-link:hover::after {
+			width: 100%;
+		}
+
+		.nav-link.active {
+			color: #43A047;
+			font-weight: 600;
+		}
+
+		.nav-link.active::after {
+			width: 100%;
+		}
+
+		.logo-container {
+			display: flex;
+			align-items: center;
+		}
+
+		.logo {
+			background-color: #43A047;
+			border-radius: 8px;
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-weight: 700;
+			font-size: 20px;
+			box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
+		}
+
+		.notification-panel {
+			position: absolute;
+			top: 70px;
+			right: 20px;
+			width: 320px;
+			max-height: 400px;
+			overflow-y: auto;
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+			z-index: 100;
+			display: none;
+		}
+
+		.btn-primary {
+			background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+			transition: all 0.3s ease;
+		}
+
+		.btn-primary:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+		}
+
+		.btn-outline {
+			transition: all 0.3s ease;
+		}
+
+		.btn-outline:hover {
+			transform: translateY(-2px);
+		}
+
+		.breadcrumb-item {
+			display: flex;
+			align-items: center;
+		}
+
+		.breadcrumb-item:not(:last-child)::after {
+			content: '/';
+			margin: 0 0.5rem;
+			color: #9ca3af;
+		}
+
+		.breadcrumb-item:last-child {
+			color: #6b7280;
+			font-weight: 500;
+		}
+
+		.calendar-container {
+			background-color: white;
+			border-radius: 12px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		}
+
+		.calendar-header {
+			padding: 20px;
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.calendar-view-toggle {
+			display: flex;
+			border-radius: 8px;
+			overflow: hidden;
+			border: 1px solid #e5e7eb;
+		}
+
+		.calendar-view-btn {
+			padding: 8px 16px;
+			font-size: 14px;
+			background-color: white;
+			border: none;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.calendar-view-btn.active {
+			background-color: #2196F3;
+			color: white;
+		}
+
+		.calendar-navigation {
+			display: flex;
+			align-items: center;
+		}
+
+		.calendar-nav-btn {
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: white;
+			border: 1px solid #e5e7eb;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.calendar-nav-btn:hover {
+			background-color: #f3f4f6;
+		}
+
+		.calendar-title {
+			font-size: 18px;
+			font-weight: 600;
+			margin: 0 16px;
+		}
+
+		.calendar-grid {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.calendar-day-header {
+			padding: 12px;
+			text-align: center;
+			font-weight: 500;
+			color: #6b7280;
+			border-right: 1px solid #e5e7eb;
+		}
+
+		.calendar-day-header:last-child {
+			border-right: none;
+		}
+
+		.calendar-day {
+			min-height: 120px;
+			padding: 8px;
+			border-right: 1px solid #e5e7eb;
+			border-bottom: 1px solid #e5e7eb;
+			position: relative;
+		}
+
+		.calendar-day:nth-child(7n) {
+			border-right: none;
+		}
+
+		.calendar-day:nth-last-child(-n+7) {
+			border-bottom: none;
+		}
+
+		.calendar-day-number {
+			font-size: 14px;
+			font-weight: 500;
+			margin-bottom: 8px;
+			color: #4b5563;
+		}
+
+		.calendar-day.today .calendar-day-number {
+			background-color: #2196F3;
+			color: white;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.calendar-day.other-month {
+			background-color: #f9fafb;
+		}
+
+		.calendar-day.other-month .calendar-day-number {
+			color: #9ca3af;
+		}
+
+		.calendar-event {
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 12px;
+			margin-bottom: 4px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			cursor: pointer;
+			transition: all 0.2s ease;
+		}
+
+		.calendar-event:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.calendar-event.marketing {
+			background-color: rgba(239, 68, 68, 0.1);
+			border-left: 3px solid #ef4444;
+			color: #b91c1c;
+		}
+
+		.calendar-event.economics {
+			background-color: rgba(16, 185, 129, 0.1);
+			border-left: 3px solid #10b981;
+			color: #047857;
+		}
+
+		.calendar-event.business {
+			background-color: rgba(59, 130, 246, 0.1);
+			border-left: 3px solid #3b82f6;
+			color: #1d4ed8;
+		}
+
+		.calendar-event.finance {
+			background-color: rgba(139, 92, 246, 0.1);
+			border-left: 3px solid #8b5cf6;
+			color: #5b21b6;
+		}
+
+		.calendar-event.management {
+			background-color: rgba(245, 158, 11, 0.1);
+			border-left: 3px solid #f59e0b;
+			color: #b45309;
+		}
+
+		/* Week View Styles */
+		.week-view {
+			display: none;
+		}
+
+		.week-view-grid {
+			display: grid;
+			grid-template-columns: 60px repeat(7, 1fr);
+		}
+
+		.week-view-header {
+			padding: 12px;
+			text-align: center;
+			font-weight: 500;
+			color: #6b7280;
+			border-right: 1px solid #e5e7eb;
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.week-view-header:last-child {
+			border-right: none;
+		}
+
+		.week-view-time {
+			padding: 8px;
+			text-align: right;
+			font-size: 12px;
+			color: #6b7280;
+			border-right: 1px solid #e5e7eb;
+			border-bottom: 1px solid #e5e7eb;
+			height: 60px;
+		}
+
+		.week-view-cell {
+			border-right: 1px solid #e5e7eb;
+			border-bottom: 1px solid #e5e7eb;
+			height: 60px;
+			position: relative;
+		}
+
+		.week-view-cell:nth-child(8n) {
+			border-right: none;
+		}
+
+		.week-view-event {
+			position: absolute;
+			left: 2px;
+			right: 2px;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 12px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			cursor: pointer;
+			z-index: 10;
+		}
+
+		/* Day View Styles */
+		.day-view {
+			display: none;
+		}
+
+		.day-view-grid {
+			display: grid;
+			grid-template-columns: 60px 1fr;
+		}
+
+		.day-view-header {
+			padding: 12px;
+			text-align: center;
+			font-weight: 500;
+			color: #6b7280;
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.day-view-time {
+			padding: 8px;
+			text-align: right;
+			font-size: 12px;
+			color: #6b7280;
+			border-right: 1px solid #e5e7eb;
+			border-bottom: 1px solid #e5e7eb;
+			height: 60px;
+		}
+
+		.day-view-cell {
+			border-bottom: 1px solid #e5e7eb;
+			height: 60px;
+			position: relative;
+		}
+
+		.day-view-event {
+			position: absolute;
+			left: 2px;
+			right: 2px;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 12px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			cursor: pointer;
+			z-index: 10;
+		}
+
+		/* Filter Styles */
+		.filter-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+
+		.filter-chip {
+			display: flex;
+			align-items: center;
+			padding: 4px 12px;
+			border-radius: 16px;
+			font-size: 12px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+		}
+
+		.filter-chip:hover {
+			opacity: 0.8;
+		}
+
+		.filter-chip.active {
+			font-weight: 500;
+		}
+
+		.filter-chip.marketing {
+			background-color: rgba(239, 68, 68, 0.1);
+			color: #b91c1c;
+		}
+
+		.filter-chip.economics {
+			background-color: rgba(16, 185, 129, 0.1);
+			color: #047857;
+		}
+
+		.filter-chip.business {
+			background-color: rgba(59, 130, 246, 0.1);
+			color: #1d4ed8;
+		}
+
+		.filter-chip.finance {
+			background-color: rgba(139, 92, 246, 0.1);
+			color: #5b21b6;
+		}
+
+		.filter-chip.management {
+			background-color: rgba(245, 158, 11, 0.1);
+			color: #b45309;
+		}
+
+		.filter-chip.all {
+			background-color: rgba(107, 114, 128, 0.1);
+			color: #4b5563;
+		}
+
+		/* Add Task Button */
+		.add-task-btn {
+			position: fixed;
+			bottom: 24px;
+			right: 24px;
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			background-color: #2196F3;
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+			cursor: pointer;
+			transition: all 0.3s ease;
+			z-index: 50;
+		}
+
+		.add-task-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 15px rgba(33, 150, 243, 0.4);
+		}
+	</style>
+</head>
+
+<body>
+	<header class="bg-white shadow-sm">
+		<div class="container mx-auto px-4 py-3">
+			<div class="flex justify-between items-center">
+				<!-- Logo and Navigation -->
+				<div class="flex items-center space-x-8">
+					<!-- Logo -->
+					<div class="logo-container">
+						<img src="img/AceIt! Logo.png" width="60px" height="60px" />
+					</div>
+
+					<!-- Navigation Menu -->
+					<nav class="hidden md:flex space-x-6">
+						<a href="index.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Home</a>
+						<a href="assignments.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Assignments</a>
+						<a href="tasks.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Tasks</a>
+						<a href="#" class="nav-link active text-gray-800 hover:text-gray-900 px-2 py-1">Calendar</a>
+						<a href="ace-ai.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Ace.AI</a>
+						<a href="resources.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Resources</a>
+					</nav>
+				</div>
+
+				<!-- User Profile and Notifications -->
+				<div class="flex items-center space-x-6">
+					<div class="relative">
+						<button id="notificationBtn" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+								stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+								</path>
+							</svg>
+							<span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+						</button>
+
+						<!-- Notification Panel -->
+						<div id="notificationPanel" class="notification-panel">
+							<div class="p-4 border-b border-gray-200">
+								<h3 class="font-semibold text-lg">Notifications</h3>
+							</div>
+							<div class="p-2">
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-blue-500">
+									<p class="text-sm font-medium">Feedback on Marketing Assignment</p>
+									<p class="text-xs text-gray-500">Dr. Johnson left feedback on your assignment</p>
+									<p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+								</div>
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-green-500">
+									<p class="text-sm font-medium">Group Message: Project Team</p>
+									<p class="text-xs text-gray-500">Alex: "I've uploaded the final presentation slides"</p>
+									<p class="text-xs text-gray-400 mt-1">Yesterday</p>
+								</div>
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-purple-500">
+									<p class="text-sm font-medium">New Badge Unlocked!</p>
+									<p class="text-xs text-gray-500">You've earned the "Early Submitter" badge</p>
+									<p class="text-xs text-gray-400 mt-1">2 days ago</p>
+								</div>
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-yellow-500">
+									<p class="text-sm font-medium">Appraisal Rating</p>
+									<p class="text-xs text-gray-500">You received an A on your Economics paper</p>
+									<p class="text-xs text-gray-400 mt-1">3 days ago</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex items-center gap-3">
+						<div class="text-right mr-2">
+							<div class="font-semibold">Chloe Tan</div>
+							<div class="text-xs text-gray-500">Business Studies</div>
+						</div>
+						<img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile"
+							class="w-10 h-10 rounded-full border-2" style="border-color: #43A047;" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main class="container mx-auto px-4 py-6">
+		<!-- Breadcrumbs -->
+		<div class="flex mb-6">
+			<nav class="flex" aria-label="Breadcrumb">
+				<ol class="flex items-center space-x-1 text-sm">
+					<li class="breadcrumb-item">
+						<a href="index.html" class="text-blue-600 hover:text-blue-800">Home</a>
+					</li>
+					<li class="breadcrumb-item">
+						Calendar
+					</li>
+				</ol>
+			</nav>
+		</div>
+
+		<!-- Page Header -->
+		<div class="flex justify-between items-center mb-6">
+			<div>
+				<h1 class="text-2xl font-bold text-gray-800">My Calendar</h1>
+				<p class="text-gray-600">View and manage your tasks and deadlines</p>
+			</div>
+		</div>
+
+		<!-- Calendar Container -->
+		<div class="calendar-container mb-6">
+			<!-- Calendar Header -->
+			<div class="calendar-header flex justify-between items-center">
+				<div class="calendar-navigation">
+					<button class="calendar-nav-btn">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+							stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+						</svg>
+					</button>
+					<h2 class="calendar-title">May 2023</h2>
+					<button class="calendar-nav-btn">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+							stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+						</svg>
+					</button>
+					<button
+						class="btn-outline border border-gray-300 text-gray-600 px-4 py-1 rounded-lg text-sm hover:bg-gray-50 ml-4">
+						Today
+					</button>
+				</div>
+				<div class="flex items-center space-x-4">
+					<div class="calendar-view-toggle">
+						<button id="month-view-btn" class="calendar-view-btn active">Month</button>
+						<button id="week-view-btn" class="calendar-view-btn">Week</button>
+						<button id="day-view-btn" class="calendar-view-btn">Day</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Calendar Filters -->
+			<div class="p-4 border-b border-gray-200">
+				<h3 class="text-sm font-medium text-gray-700 mb-2">Filter by Assignment:</h3>
+				<div class="filter-container">
+					<div class="filter-chip all active">
+						<span>All Tasks</span>
+					</div>
+					<div class="filter-chip marketing">
+						<span>Social Media Marketing</span>
+					</div>
+					<div class="filter-chip economics">
+						<span>Economics Analysis</span>
+					</div>
+					<div class="filter-chip business">
+						<span>Business Strategy</span>
+					</div>
+					<div class="filter-chip finance">
+						<span>Financial Modeling</span>
+					</div>
+					<div class="filter-chip management">
+						<span>Management Theory</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Month View (Default) -->
+			<div id="month-view" class="month-view">
+				<!-- Calendar Days Header -->
+				<div class="calendar-grid">
+					<div class="calendar-day-header">Sun</div>
+					<div class="calendar-day-header">Mon</div>
+					<div class="calendar-day-header">Tue</div>
+					<div class="calendar-day-header">Wed</div>
+					<div class="calendar-day-header">Thu</div>
+					<div class="calendar-day-header">Fri</div>
+					<div class="calendar-day-header">Sat</div>
+				</div>
+
+				<!-- Calendar Days Grid -->
+				<div class="calendar-grid">
+					<!-- Previous Month Days -->
+					<div class="calendar-day other-month">
+						<div class="calendar-day-number">30</div>
+					</div>
+
+					<!-- May 1-6 -->
+					<div class="calendar-day">
+						<div class="calendar-day-number">1</div>
+						<div class="calendar-event economics">
+							<span>Data Collection</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">2</div>
+						<div class="calendar-event economics">
+							<span>Data Analysis</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">3</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">4</div>
+						<div class="calendar-event finance">
+							<span>Research Meeting</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">5</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">6</div>
+					</div>
+
+					<!-- May 7-13 -->
+					<div class="calendar-day">
+						<div class="calendar-day-number">7</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">8</div>
+						<div class="calendar-event marketing">
+							<span>Project Setup</span>
+						</div>
+						<div class="calendar-event business">
+							<span>Case Study Review</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">9</div>
+						<div class="calendar-event marketing">
+							<span>Audience Analysis</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">10</div>
+						<div class="calendar-event management">
+							<span>Team Leadership</span>
+						</div>
+					</div>
+					<div class="calendar-day today">
+						<div class="calendar-day-number">11</div>
+						<div class="calendar-event marketing">
+							<span>Audience Analysis</span>
+						</div>
+						<div class="calendar-event finance">
+							<span>Budget Planning</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">12</div>
+						<div class="calendar-event marketing">
+							<span>Audience Analysis Due</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">13</div>
+						<div class="calendar-event marketing">
+							<span>Content Calendar</span>
+						</div>
+					</div>
+
+					<!-- May 14-20 -->
+					<div class="calendar-day">
+						<div class="calendar-day-number">14</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">15</div>
+						<div class="calendar-event marketing">
+							<span>Content Calendar Due</span>
+						</div>
+						<div class="calendar-event economics">
+							<span>Report Draft</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">16</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">17</div>
+						<div class="calendar-event business">
+							<span>SWOT Analysis</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">18</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">19</div>
+						<div class="calendar-event finance">
+							<span>Financial Model Due</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">20</div>
+					</div>
+
+					<!-- May 21-27 -->
+					<div class="calendar-day">
+						<div class="calendar-day-number">21</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">22</div>
+						<div class="calendar-event marketing">
+							<span>Final Report</span>
+						</div>
+						<div class="calendar-event management">
+							<span>Case Presentation</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">23</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">24</div>
+						<div class="calendar-event economics">
+							<span>Final Submission</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">25</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">26</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">27</div>
+					</div>
+
+					<!-- May 28-31 + Next Month -->
+					<div class="calendar-day">
+						<div class="calendar-day-number">28</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">29</div>
+						<div class="calendar-event business">
+							<span>Final Presentation</span>
+						</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">30</div>
+					</div>
+					<div class="calendar-day">
+						<div class="calendar-day-number">31</div>
+					</div>
+					<div class="calendar-day other-month">
+						<div class="calendar-day-number">1</div>
+					</div>
+					<div class="calendar-day other-month">
+						<div class="calendar-day-number">2</div>
+					</div>
+					<div class="calendar-day other-month">
+						<div class="calendar-day-number">3</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Week View -->
+			<div id="week-view" class="week-view">
+				<div class="week-view-grid">
+					<!-- Time Column -->
+					<div class="week-view-header"></div>
+
+					<!-- Day Headers -->
+					<div class="week-view-header">
+						<div>Sun</div>
+						<div class="text-sm font-normal">May 7</div>
+					</div>
+					<div class="week-view-header">
+						<div>Mon</div>
+						<div class="text-sm font-normal">May 8</div>
+					</div>
+					<div class="week-view-header">
+						<div>Tue</div>
+						<div class="text-sm font-normal">May 9</div>
+					</div>
+					<div class="week-view-header">
+						<div>Wed</div>
+						<div class="text-sm font-normal">May 10</div>
+					</div>
+					<div class="week-view-header">
+						<div>Thu</div>
+						<div class="text-sm font-normal">May 11</div>
+					</div>
+					<div class="week-view-header">
+						<div>Fri</div>
+						<div class="text-sm font-normal">May 12</div>
+					</div>
+					<div class="week-view-header">
+						<div>Sat</div>
+						<div class="text-sm font-normal">May 13</div>
+					</div>
+
+					<!-- 8:00 AM Row -->
+					<div class="week-view-time">8:00 AM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 9:00 AM Row -->
+					<div class="week-view-time">9:00 AM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell">
+						<div class="week-view-event marketing" style="top: 0; height: 58px;">
+							Project Setup
+						</div>
+					</div>
+					<div class="week-view-cell">
+						<div class="week-view-event marketing" style="top: 0; height: 58px;">
+							Audience Analysis
+						</div>
+					</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 10:00 AM Row -->
+					<div class="week-view-time">10:00 AM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell">
+						<div class="week-view-event management" style="top: 0; height: 58px;">
+							Team Leadership
+						</div>
+					</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 11:00 AM Row -->
+					<div class="week-view-time">11:00 AM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell">
+						<div class="week-view-event business" style="top: 0; height: 58px;">
+							Case Study Review
+						</div>
+					</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell">
+						<div class="week-view-event marketing" style="top: 0; height: 58px;">
+							Audience Analysis
+						</div>
+					</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 12:00 PM Row -->
+					<div class="week-view-time">12:00 PM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 1:00 PM Row -->
+					<div class="week-view-time">1:00 PM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell">
+						<div class="week-view-event finance" style="top: 0; height: 58px;">
+							Budget Planning
+						</div>
+					</div>
+					<div class="week-view-cell">
+						<div class="week-view-event marketing" style="top: 0; height: 58px;">
+							Audience Analysis Due
+						</div>
+					</div>
+					<div class="week-view-cell"></div>
+
+					<!-- 2:00 PM Row -->
+					<div class="week-view-time">2:00 PM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell">
+						<div class="week-view-event marketing" style="top: 0; height: 58px;">
+							Content Calendar
+						</div>
+					</div>
+
+					<!-- 3:00 PM Row -->
+					<div class="week-view-time">3:00 PM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 4:00 PM Row -->
+					<div class="week-view-time">4:00 PM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+
+					<!-- 5:00 PM Row -->
+					<div class="week-view-time">5:00 PM</div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+					<div class="week-view-cell"></div>
+				</div>
+			</div>
+
+			<!-- Day View -->
+			<div id="day-view" class="day-view">
+				<div class="day-view-grid">
+					<!-- Time Column -->
+					<div class="day-view-header"></div>
+
+					<!-- Day Header -->
+					<div class="day-view-header">
+						<div>Thursday</div>
+						<div class="text-sm font-normal">May 11, 2023</div>
+					</div>
+
+					<!-- 8:00 AM Row -->
+					<div class="day-view-time">8:00 AM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 9:00 AM Row -->
+					<div class="day-view-time">9:00 AM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 10:00 AM Row -->
+					<div class="day-view-time">10:00 AM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 11:00 AM Row -->
+					<div class="day-view-time">11:00 AM</div>
+					<div class="day-view-cell">
+						<div class="day-view-event marketing" style="top: 0; height: 58px;">
+							Audience Analysis
+						</div>
+					</div>
+
+					<!-- 12:00 PM Row -->
+					<div class="day-view-time">12:00 PM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 1:00 PM Row -->
+					<div class="day-view-time">1:00 PM</div>
+					<div class="day-view-cell">
+						<div class="day-view-event finance" style="top: 0; height: 58px;">
+							Budget Planning
+						</div>
+					</div>
+
+					<!-- 2:00 PM Row -->
+					<div class="day-view-time">2:00 PM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 3:00 PM Row -->
+					<div class="day-view-time">3:00 PM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 4:00 PM Row -->
+					<div class="day-view-time">4:00 PM</div>
+					<div class="day-view-cell"></div>
+
+					<!-- 5:00 PM Row -->
+					<div class="day-view-time">5:00 PM</div>
+					<div class="day-view-cell"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Upcoming Tasks -->
+		<div class="bg-white rounded-xl shadow-sm p-6">
+			<h2 class="text-xl font-semibold text-gray-800 mb-6">Upcoming Tasks</h2>
+
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead>
+						<tr>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task
+							</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Assignment</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due
+								Date</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Progress</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Status</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						<!-- Task 1 -->
+						<tr>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Audience Analysis</div>
+								<div class="text-xs text-gray-500">Analyze target demographics and create personas</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Social
+									Media Marketing</span>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">May 12, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-blue-500 h-2.5 rounded-full" style="width: 75%"></div>
+								</div>
+								<div class="text-xs text-gray-500">75% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In
+									Progress</span>
+							</td>
+						</tr>
+
+						<!-- Task 2 -->
+						<tr>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Content Calendar</div>
+								<div class="text-xs text-gray-500">Create a 3-month content calendar for all platforms</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Social
+									Media Marketing</span>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-orange-500 font-medium">May 15, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+								</div>
+								<div class="text-xs text-gray-500">Not started</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">To
+									Do</span>
+							</td>
+						</tr>
+
+						<!-- Task 3 -->
+						<tr>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Report Draft</div>
+								<div class="text-xs text-gray-500">Complete first draft of economic impact analysis</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Economics
+									Analysis</span>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-orange-500 font-medium">May 15, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-blue-500 h-2.5 rounded-full" style="width: 30%"></div>
+								</div>
+								<div class="text-xs text-gray-500">30% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In
+									Progress</span>
+							</td>
+						</tr>
+
+						<!-- Task 4 -->
+						<tr>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">SWOT Analysis</div>
+								<div class="text-xs text-gray-500">Complete SWOT analysis for case company</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Business
+									Strategy</span>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 17, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-blue-500 h-2.5 rounded-full" style="width: 50%"></div>
+								</div>
+								<div class="text-xs text-gray-500">50% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In
+									Progress</span>
+							</td>
+						</tr>
+
+						<!-- Task 5 -->
+						<tr>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Financial Model</div>
+								<div class="text-xs text-gray-500">Complete 5-year financial projection model</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Financial
+									Modeling</span>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 19, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-blue-500 h-2.5 rounded-full" style="width: 25%"></div>
+								</div>
+								<div class="text-xs text-gray-500">25% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In
+									Progress</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+	<div class="add-task-btn">
+		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+		</svg>
+	</div>
+	<script>
+		// Toggle Notification Panel
+		const notificationBtn = document.getElementById('notificationBtn');
+		const notificationPanel = document.getElementById('notificationPanel');
+
+		notificationBtn.addEventListener('click', function () {
+			if (notificationPanel.style.display === 'block') {
+				notificationPanel.style.display = 'none';
+			} else {
+				notificationPanel.style.display = 'block';
+			}
+		});
+
+		// Close notification panel when clicking outside
+		document.addEventListener('click', function (event) {
+			if (!notificationBtn.contains(event.target) && !notificationPanel.contains(event.target)) {
+				notificationPanel.style.display = 'none';
+			}
+		});
+
+		// Calendar View Toggle
+		const monthViewBtn = document.getElementById('month-view-btn');
+		const weekViewBtn = document.getElementById('week-view-btn');
+		const dayViewBtn = document.getElementById('day-view-btn');
+
+		const monthView = document.getElementById('month-view');
+		const weekView = document.getElementById('week-view');
+		const dayView = document.getElementById('day-view');
+
+		monthViewBtn.addEventListener('click', function () {
+			monthViewBtn.classList.add('active');
+			weekViewBtn.classList.remove('active');
+			dayViewBtn.classList.remove('active');
+
+			monthView.style.display = 'block';
+			weekView.style.display = 'none';
+			dayView.style.display = 'none';
+		});
+
+		weekViewBtn.addEventListener('click', function () {
+			monthViewBtn.classList.remove('active');
+			weekViewBtn.classList.add('active');
+			dayViewBtn.classList.remove('active');
+
+			monthView.style.display = 'none';
+			weekView.style.display = 'block';
+			dayView.style.display = 'none';
+		});
+
+		dayViewBtn.addEventListener('click', function () {
+			monthViewBtn.classList.remove('active');
+			weekViewBtn.classList.remove('active');
+			dayViewBtn.classList.add('active');
+
+			monthView.style.display = 'none';
+			weekView.style.display = 'none';
+			dayView.style.display = 'block';
+		});
+
+		// Filter Chips
+		const filterChips = document.querySelectorAll('.filter-chip');
+
+		filterChips.forEach(chip => {
+			chip.addEventListener('click', function () {
+				// If clicking on "All Tasks", activate it and deactivate others
+				if (chip.classList.contains('all')) {
+					filterChips.forEach(c => c.classList.remove('active'));
+					chip.classList.add('active');
+				} else {
+					// If clicking on a specific filter
+					const allChip = document.querySelector('.filter-chip.all');
+					allChip.classList.remove('active');
+
+					// Toggle active state for the clicked chip
+					chip.classList.toggle('active');
+
+					// If no specific filters are active, reactivate "All Tasks"
+					const activeFilters = document.querySelectorAll('.filter-chip.active');
+					if (activeFilters.length === 0) {
+						allChip.classList.add('active');
+					}
+				}
+
+				// Here you would implement the actual filtering logic
+				// For this demo, we're just toggling the active state
+			});
+		});
+
+		// Calendar Events Click
+		const calendarEvents = document.querySelectorAll('.calendar-event, .week-view-event, .day-view-event');
+
+		calendarEvents.forEach(event => {
+			event.addEventListener('click', function () {
+				alert('Task details: ' + event.innerText);
+				// In a real app, this would open a modal with task details
+			});
+		});
+	</script>
+</body>
+
+</html>

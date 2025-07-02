@@ -42,6 +42,19 @@
       box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
     }
 
+    .btn-outline-gradient {
+      background: transparent;
+      /* Off-white */
+      border: 1px solid #1976D2;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-gradient:hover {
+      background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(33, 150, 243, 0.15);
+    }
+
     .nav-link {
       position: relative;
       transition: all 0.3s ease;
@@ -155,6 +168,196 @@
       z-index: 100;
       display: none;
     }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '/';
+      margin: 0 0.5rem;
+      color: #9ca3af;
+    }
+
+    .breadcrumb-item:last-child {
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.hidden {
+      display: none;
+    }
+
+    /* Modal Window */
+    .modal-chat-window {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(33, 150, 243, 0.08), 0 1.5px 6px rgba(67, 160, 71, 0.12);
+      width: 700px;
+      max-width: 95vw;
+      height: 800px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 0;
+      animation: popin 0.2s;
+    }
+
+    @keyframes popin {
+      from {
+        transform: scale(0.96) translateY(40px);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Close button */
+    .modal-close-btn {
+      background: none;
+      border: none;
+      font-size: 1.9rem;
+      color: #888;
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 2;
+      transition: color 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      color: #2196f3;
+    }
+
+    /* Header */
+    .modal-chat-header {
+      padding: 20px 24px 12px 24px;
+      border-bottom: 1px solid #e3e6ee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-chat-header h2 {
+      font-size: 1.18rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: #1976d2;
+    }
+
+    .team-avatars {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .team-avatars img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid #43A047;
+      object-fit: cover;
+    }
+
+    /* Messages */
+    .modal-chat-messages {
+      flex: 1;
+      padding: 18px 24px 12px 24px;
+      overflow-y: auto;
+      background: #fafbfc;
+      min-height: 500px;
+      max-height: 670px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-msg {
+      background: #f1f7fa;
+      border-radius: 10px;
+      padding: 8px 12px;
+      max-width: 80%;
+      align-self: flex-start;
+      font-size: 0.97rem;
+      box-shadow: 0 1px 3px rgba(33, 150, 243, 0.04);
+      position: relative;
+    }
+
+    .chat-msg.mine {
+      background: #e2f7e4;
+      align-self: flex-end;
+    }
+
+    .msg-author {
+      font-size: 0.91em;
+      color: #1976d2;
+      font-weight: 500;
+    }
+
+    .msg-text {
+      margin-top: 2px;
+      margin-bottom: 2px;
+      color: #222;
+    }
+
+    .msg-time {
+      font-size: 0.82em;
+      color: #9ca3af;
+      text-align: right;
+    }
+
+    /* Input */
+    .modal-chat-input {
+      display: flex;
+      border-top: 1px solid #e3e6ee;
+      padding: 8px 16px 12px 16px;
+      gap: 8px;
+      background: #fff;
+    }
+
+    .modal-chat-input input[type="text"] {
+      flex: 1;
+      border: 1px solid #cfd8dc;
+      border-radius: 9px;
+      padding: 7px 12px;
+      font-size: 1rem;
+      outline: none;
+      background: #f5f8fa;
+    }
+
+    .modal-chat-input button {
+      background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+      color: #fff;
+      border: none;
+      padding: 7px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .modal-chat-input button:disabled {
+      background: #b0bec5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 
@@ -166,9 +369,7 @@
         <div class="flex items-center space-x-8">
           <!-- Logo -->
           <div class="logo-container">
-            <div class="logo">
-              <span>A</span>
-            </div>
+            <img src="img/AceIt! Logo.png" class="h-12 w-12" alt="AceIt! Logo" />
           </div>
 
           <!-- Navigation Menu -->
@@ -176,9 +377,9 @@
             <a href="index.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Home</a>
             <a href="#" class="nav-link active text-gray-800 hover:text-gray-900 px-2 py-1">Assignments</a>
             <a href="tasks.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Tasks</a>
-            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Calendar</a>
-            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Ace.AI</a>
-            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Resources</a>
+            <a href="calendar.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Calendar</a>
+            <a href="ace-ai.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Ace.AI</a>
+            <a href="resources.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Resources</a>
           </nav>
         </div>
 
@@ -224,25 +425,32 @@
               </div>
             </div>
           </div>
-          <div class="flex items-center space-x-3">
-            <div class="text-right">
-              <p class="font-medium">Chloe Tan</p>
-              <p class="text-sm text-gray-500">Business Studies</p>
+          <div class="flex items-center gap-3">
+            <div class="text-right mr-2">
+              <div class="font-semibold">Chloe Tan</div>
+              <div class="text-xs text-gray-500">Business Studies</div>
             </div>
-            <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-gray-200">
-              <!-- Profile picture placeholder - replace with actual image -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-300" viewBox="0 0 20 20"
-                fill="currentColor">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
-                </path>
-              </svg>
-            </div>
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile"
+              class="w-10 h-10 rounded-full border-2" style="border-color: #43A047;" />
           </div>
         </div>
       </div>
     </div>
   </header>
   <main class="container mx-auto px-4 py-6">
+    <!-- Breadcrumbs -->
+    <div class="flex mb-6">
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-1 text-sm">
+          <li class="breadcrumb-item">
+            <a href="index.html" class="text-blue-600 hover:text-blue-800">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            Assignments
+          </li>
+        </ol>
+      </nav>
+    </div>
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-gray-800">My Assignments</h1>
       <div>
@@ -317,7 +525,13 @@
                   class="h-8 w-8 rounded-full border-2 border-white bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
                   CT</div>
               </div>
-              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">View Details</button>
+              <div class="flex items-center space-x-2">
+                <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">View Details</button>
+                <button class="btn-outline-gradient px-4 py-2 rounded-lg text-sm text-blue-600 hover:text-white"
+                  onclick="window.location.href='tasks.html'">
+                  Go to Tasks
+                </button>
+              </div>
             </div>
           </div>
 
@@ -501,7 +715,7 @@
                 </svg>
               </button>
             </div>
-            <div class="feedback-expanded bg-gray-50 rounded-lg p-4 mt-2">
+            <div class="feedback-expanded bg-gray-50 rounded-lg px-4 mt-2">
               <div class="flex items-start mb-2">
                 <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
                   <span class="text-blue-600 font-medium">DJ</span>
@@ -559,7 +773,7 @@
                 </svg>
               </button>
             </div>
-            <div class="feedback-expanded bg-gray-50 rounded-lg p-4 mt-2">
+            <div class="feedback-expanded bg-gray-50 rounded-lg px-4 mt-2">
               <div class="flex items-start mb-2">
                 <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
                   <span class="text-purple-600 font-medium">PL</span>
@@ -651,7 +865,7 @@
                 </svg>
               </button>
             </div>
-            <div class="feedback-expanded bg-gray-50 rounded-lg p-4 mt-2">
+            <div class="feedback-expanded bg-gray-50 rounded-lg px-4 mt-2">
               <div class="flex items-start mb-2">
                 <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
                   <span class="text-green-600 font-medium">RC</span>
@@ -792,7 +1006,7 @@
                 </svg>
                 Due May 15, 2023
               </div>
-              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Team Chat</button>
+              <button id="teamChatButton" class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Team Chat</button>
             </div>
           </div>
         </div>
@@ -934,6 +1148,59 @@
         </div>
       </div>
     </div>
+    <!-- Team Chat Modal -->
+    <div id="teamChatModal" class="modal-overlay hidden">
+      <div class="modal-chat-window">
+        <button class="modal-close-btn" id="teamChatCloseBtn" aria-label="Close team chat">
+          &times;
+        </button>
+        <div class="modal-chat-header">
+          <h2>Team Chat</h2>
+          <div class="team-avatars">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Alex" title="Alex" />
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Chloe" title="Chloe" />
+            <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Marcus" title="Marcus" />
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya" title="Priya" />
+          </div>
+        </div>
+        <div class="modal-chat-messages">
+          <div class="chat-msg">
+            <div class="msg-author">Priya</div>
+            <div class="msg-text">Chloe, have you finalized the slide deck design?</div>
+            <div class="msg-time">1 Jul 7:31 PM</div>
+          </div>
+          <div class="chat-msg">
+            <div class="msg-author">Alex</div>
+            <div class="msg-text">Hey guys, I missed the check-in, how was it?</div>
+            <div class="msg-time">1 Jul 9:40 PM</div>
+          </div>
+          <div class="chat-msg mine">
+            <div class="msg-author">You</div>
+            <div class="msg-text">Hey team! Let’s finalize our slides by tonight?</div>
+            <div class="msg-time">10:21 AM</div>
+          </div>
+          <div class="chat-msg">
+            <div class="msg-author">Alex</div>
+            <div class="msg-text">Slides are almost done. Priya, can you review?</div>
+            <div class="msg-time">10:22 AM</div>
+          </div>
+          <div class="chat-msg">
+            <div class="msg-author">Priya</div>
+            <div class="msg-text">Reviewing now! Will update by 11AM.</div>
+            <div class="msg-time">10:23 AM</div>
+          </div>
+          <div class="chat-msg">
+            <div class="msg-author">Marcus</div>
+            <div class="msg-text">Awesome, I’ll start preparing the script.</div>
+            <div class="msg-time">10:24 AM</div>
+          </div>
+        </div>
+        <form class="modal-chat-input" onsubmit="return false;">
+          <input type="text" placeholder="Type a message..." />
+          <button type="submit" disabled>Send</button>
+        </form>
+      </div>
+    </div>
   </main>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -956,6 +1223,33 @@
         }
       });
 
+      document.getElementById('teamChatButton').addEventListener('click', openTeamChatModal);
+
+      // Show the modal (call this from a button or event)
+      function openTeamChatModal() {
+        document.getElementById('teamChatModal').classList.remove('hidden');
+        // Focus the input for accessibility
+        document.querySelector('#teamChatModal input[type="text"]').focus();
+      }
+      // Hide the modal
+      document.getElementById('teamChatCloseBtn').onclick = function() {
+        document.getElementById('teamChatModal').classList.add('hidden');
+      };
+      // Optional: ESC closes the modal
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          document.getElementById('teamChatModal').classList.add('hidden');
+        }
+      });
+      // Optional: enable send button when there's text
+      const chatInput = document.querySelector('#teamChatModal input[type="text"]');
+      const chatSendBtn = document.querySelector('#teamChatModal button[type="submit"]');
+      if(chatInput && chatSendBtn) {
+        chatInput.addEventListener('input', function() {
+          chatSendBtn.disabled = this.value.trim() === '';
+        });
+      }
+
       // Group Project Card Click - Show Assignment Details
       const groupProjectCard = document.getElementById('group-project-card');
       const assignmentDetails = document.getElementById('assignment-details');
@@ -969,31 +1263,28 @@
         assignmentDetails.classList.remove('active');
       });
 
-      // Feedback Toggle
       const feedbackToggles = document.querySelectorAll('.feedback-toggle');
 
+      // Feedback Toggle
       feedbackToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
+        toggle.addEventListener('click', function () {
+          // Find the next sibling (the feedback panel)
           const feedbackContent = toggle.closest('.assignment-card').querySelector('.feedback-expanded');
           const chevronIcon = toggle.querySelector('.chevron-icon');
 
           if (feedbackContent.classList.contains('show')) {
+            feedbackContent.classList.remove('py-4');
             feedbackContent.classList.remove('show');
             chevronIcon.classList.remove('rotated');
+            toggle.textContent = "View Feedback";
+            toggle.appendChild(chevronIcon);
           } else {
+            feedbackContent.classList.add('py-4');
             feedbackContent.classList.add('show');
             chevronIcon.classList.add('rotated');
+            toggle.textContent = "Hide Feedback";
+            toggle.appendChild(chevronIcon);
           }
-        });
-      });
-
-      // Navigation menu active state
-      const navLinks = document.querySelectorAll('.nav-link');
-      navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
         });
       });
     });

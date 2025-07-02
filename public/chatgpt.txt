@@ -1362,25 +1362,6 @@
           chatSendBtn.disabled = this.value.trim() === '';
         });
       }
-
-			const kanbanBtn = document.getElementById('kanban-view-btn');
-			const ganttBtn = document.getElementById('gantt-view-btn');
-			const kanbanView = document.getElementById('kanban-view');
-			const ganttView = document.getElementById('gantt-view');
-
-			kanbanBtn.addEventListener('click', () => {
-				kanbanView.style.display = 'block';
-				ganttView.style.display = 'none';
-				kanbanBtn.classList.add('active');
-				ganttBtn.classList.remove('active');
-			});
-
-			ganttBtn.addEventListener('click', () => {
-				kanbanView.style.display = 'none';
-				ganttView.style.display = 'block';
-				ganttBtn.classList.add('active');
-				kanbanBtn.classList.remove('active');
-			});
 		});
 	</script>
 </body>
