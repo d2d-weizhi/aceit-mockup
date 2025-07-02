@@ -1657,18 +1657,12 @@
     // Initialize carousel
     updateCarousel();
 
-    // Customize Dashboard Button
-    document.querySelector('.customize-button').addEventListener('click', function () {
-      document.getElementById('newStudentHome').style.display = 'none';
-      document.getElementById('existingStudentHome').style.display = 'flex';
-    });
-
     /* Simple bar chart render using Canvas API + mouseover tooltips */
     const canvas = document.getElementById('gradesChart');
     const ctx = canvas.getContext('2d');
 
     // Chart data
-    const yTicks = [0, 5, 10, 15];
+    const yTicks = [0, 5, 10, 15, 20];
     const xLabels = ['A', 'B', 'C', 'D', 'F'];
     const bars = [
       { label: 'A', value: 8, color: '#2196F3' },    // blue
@@ -1689,7 +1683,7 @@
     function drawChart() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const dpr = window.devicePixelRatio || 1;
-      const w = canvas.width, h = canvas.height;
+      const w = canvas.width, h = canvas.height - 16;
       const n = bars.length;
 
       const leftMargin = 40 * dpr;
@@ -1697,7 +1691,7 @@
       const bottomMargin = 34 * dpr;
       const chartLeft = leftMargin;
       const chartRight = w - rightMargin;
-      const chartTop = 0;
+      const chartTop = 4 * dpr;
       const chartBottom = h - bottomMargin;
       const chartWidth = chartRight - chartLeft;
       const chartHeight = chartBottom - chartTop;
@@ -1793,6 +1787,14 @@
     });
     canvas.addEventListener('mouseleave', function () {
       document.getElementById('chart-tooltip').style.display = 'none';
+    });
+
+    // Customize Dashboard Button
+    document.querySelector('.customize-button').addEventListener('click', function () {
+      document.getElementById('newStudentHome').style.display = 'none';
+      document.getElementById('existingStudentHome').style.display = 'flex';
+      resizeCanvas();
+      drawChart();
     });
 
     // Tab Functionality
