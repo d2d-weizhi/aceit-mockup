@@ -1,0 +1,876 @@
+<html>
+  <head>
+    <title>AceIt! A Student Assignment Tracking Dashboard</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        }
+        
+        .login-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .login-card:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .logo {
+            background-color: #43A047;
+            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 28px;
+            box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
+            margin-bottom: 16px;
+        }
+        
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4b5563;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #43A047;
+            box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.2);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #43A047, #2196F3);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 160, 71, 0.3);
+        }
+        
+        .login-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .login-footer a {
+            color: #43A047;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard-container {
+            display: none;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: #43A047;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #43A047;
+            font-weight: 600;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Customize Button Styles */
+        .customize-button {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: linear-gradient(90deg, #43A047, #2196F3);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .customize-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3);
+        }
+        
+        .customize-button svg {
+            margin-right: 8px;
+        }
+        
+        .wand-icon {
+            position: relative;
+            display: inline-flex;
+        }
+        
+        .wand-sparkle {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: sparkle 1.5s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        
+        /* Onboarding Carousel Styles */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        
+        .onboarding-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .onboarding-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        
+        .onboarding-close:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .carousel-item-image {
+            width: 240px;
+            height: 240px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+        }
+        
+        .carousel-item-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+        
+        .carousel-item-description {
+            font-size: 16px;
+            color: #6b7280;
+            max-width: 500px;
+            margin-bottom: 32px;
+        }
+        
+        .carousel-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px 40px;
+        }
+        
+        .carousel-indicators {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            width: 24px;
+            border-radius: 4px;
+            background-color: #43A047;
+        }
+        
+        .carousel-button {
+            padding: 10px 24px;
+            background: linear-gradient(90deg, #43A047, #2196F3);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 160, 71, 0.3);
+        }
+        
+        /* Dashboard Panel Styles */
+        .dashboard-panel {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+        }
+        
+        .panel-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        
+        .panel-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+        
+        .empty-state-description {
+            color: #9ca3af;
+            font-size: 14px;
+            max-width: 240px;
+        }
+        
+        /* Animation Styles */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .slide-in-up {
+            animation: slideInUp 0.5s ease-out forwards;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(67, 160, 71, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(67, 160, 71, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(67, 160, 71, 0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Login Body -->
+    <div class="login-container" id="loginView">
+        <div class="login-card slide-in-up">
+            <div class="logo-container">
+                <img src="img/AceIt! Logo.png" width="60px" height="60px">
+                <div class="brand-name">AceIt!</div>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="email" class="input-label">Student Email</label>
+                    <input type="email" id="email" class="input-field" placeholder="your.name@university.edu" required="" data-nlok-ref-guid="818262c3-c542-4c34-b4e9-559349cf288e" autocomplete="off"><div id="norton-idsafe-field-styling-divId" style="height:24px;max-width:24px;vertical-align:top; position:absolute; top:224px;left:325.6774193548387px;cursor:pointer;resize: both;z-index:2147483646;"><img id="norton-idsafe-field-logo-imgId" src="chrome-extension://admmjipmmciaobhojoghlmleefbicajg/images/npw-badge-icon-locked.svg" style="height:24px; width:24px;display:block;"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password" class="input-label">Password</label>
+                    <input type="password" id="password" class="input-field" placeholder="••••••••" required="" data-nlok-ref-guid="06268a9d-ade9-48bb-fa14-7f5f1eced004" autocomplete="off"><div id="norton-idsafe-field-styling-divId" style="height:24px;max-width:24px;vertical-align:top; position:absolute; top:321px;left:325.6774193548387px;cursor:pointer;resize: both;z-index:2147483646;"><img id="norton-idsafe-field-logo-imgId" src="chrome-extension://admmjipmmciaobhojoghlmleefbicajg/images/npw-badge-icon-locked.svg" style="height:24px; width:24px;display:block;"></div>
+                </div>
+                
+                <button type="submit" class="login-button" data-nlok-ref-guid="436b2cc6-6c6e-4b93-8e6b-7f9e805cc39a">Login</button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Forgot your password? <a href="#">Reset it here</a></p>
+                <p class="mt-2">New student? <a href="#">Contact your administrator</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- Dashboard View (New Students) -->
+    <div class="dashboard-container" id="dashboardView">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <!-- Logo and Navigation -->
+                    <div class="flex items-center space-x-8">
+                        <!-- Logo -->
+                        <div class="flex items-center">
+                            <div class="bg-green-600 rounded-lg w-10 h-10 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                                A
+                            </div>
+                            <span class="ml-2 font-bold text-xl">AceIt!</span>
+                        </div>
+                        
+                        <!-- Navigation Menu -->
+                        <nav class="hidden md:flex space-x-6">
+                            <a href="#" class="nav-link active text-gray-800 hover:text-gray-900 px-2 py-1">Home</a>
+                            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Assignments</a>
+                            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Tasks</a>
+                            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Calendar</a>
+                            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Ace.AI</a>
+                            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Resources</a>
+                        </nav>
+                    </div>
+                    
+                    <!-- User Profile -->
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="font-medium">New Student</p>
+                            <p class="text-sm text-gray-500">Welcome!</p>
+                        </div>
+                        <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-6">
+            <!-- Page Header with Customize Button -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                    <p class="text-gray-600">Welcome to AceIt! Let's get started.</p>
+                </div>
+                
+                <!-- Customize Dashboard Button -->
+                <button class="customize-button">
+                    <span class="wand-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                        <span class="wand-sparkle"></span>
+                    </span>
+                    Customize your Dashboard
+                </button>
+            </div>
+
+            <!-- Dashboard Panels -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Upcoming Assignments Panel -->
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <div class="panel-icon bg-blue-100 text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                            </div>
+                            Upcoming Assignments
+                        </div>
+                        <button class="text-blue-600 text-sm font-medium">View All</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="empty-state-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">No Assignments Yet</h3>
+                        <p class="empty-state-description">Your upcoming assignments will appear here</p>
+                    </div>
+                </div>
+                
+                <!-- Tasks Panel -->
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <div class="panel-icon bg-green-100 text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            Tasks
+                        </div>
+                        <button class="text-green-600 text-sm font-medium">View All</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="empty-state-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">No Tasks Yet</h3>
+                        <p class="empty-state-description">Your tasks will appear here</p>
+                    </div>
+                </div>
+                
+                <!-- Calendar Panel -->
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <div class="panel-icon bg-purple-100 text-purple-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            Calendar
+                        </div>
+                        <button class="text-purple-600 text-sm font-medium">View All</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="empty-state-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">No Events Yet</h3>
+                        <p class="empty-state-description">Your calendar events will appear here</p>
+                    </div>
+                </div>
+                
+                <!-- Recent Resources Panel -->
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <div class="panel-icon bg-red-100 text-red-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            Recent Resources
+                        </div>
+                        <button class="text-red-600 text-sm font-medium">View All</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="empty-state-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">No Resources Yet</h3>
+                        <p class="empty-state-description">Your learning resources will appear here</p>
+                    </div>
+                </div>
+                
+                <!-- Ace.AI Panel -->
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <div class="panel-icon bg-blue-100 text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            Ace.AI Assistant
+                        </div>
+                        <button class="text-blue-600 text-sm font-medium">Chat Now</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="empty-state-icon pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">Ace.AI is Ready</h3>
+                        <p class="empty-state-description">Ask questions or get help with your assignments</p>
+                    </div>
+                </div>
+                
+                <!-- Progress Panel -->
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <div class="panel-icon bg-yellow-100 text-yellow-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            Your Progress
+                        </div>
+                        <button class="text-yellow-600 text-sm font-medium">View All</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="empty-state-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">No Progress Yet</h3>
+                        <p class="empty-state-description">Your academic progress will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Onboarding cards -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+        <div class="onboarding-container">
+            <div class="onboarding-close" id="closeOnboarding">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+            
+            <div class="carousel">
+                <div class="carousel-inner" id="carouselInner" style="transform: translateX(0%);">
+                    <!-- Slide 1: Welcome -->
+                    <div class="carousel-item">
+                        <div class="carousel-item-image bg-blue-100 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="carousel-item-title">Welcome to AceIt!</h2>
+                        <p class="carousel-item-description">Your all-in-one platform for academic success. Let's take a quick tour to help you get started.</p>
+                    </div>
+                    
+                    <!-- Slide 2: Assignments -->
+                    <div class="carousel-item">
+                        <div class="carousel-item-image bg-green-100 text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                            </svg>
+                        </div>
+                        <h2 class="carousel-item-title">Track Your Assignments</h2>
+                        <p class="carousel-item-description">Never miss a deadline again. Easily manage all your assignments, track progress, and get reminders before due dates.</p>
+                    </div>
+                    
+                    <!-- Slide 3: Tasks -->
+                    <div class="carousel-item">
+                        <div class="carousel-item-image bg-purple-100 text-purple-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="carousel-item-title">Organize Your Tasks</h2>
+                        <p class="carousel-item-description">Break down your assignments into manageable tasks. Prioritize your work and stay on top of your academic responsibilities.</p>
+                    </div>
+                    
+                    <!-- Slide 4: Ace.AI -->
+                    <div class="carousel-item">
+                        <div class="carousel-item-image bg-red-100 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="carousel-item-title">Meet Ace.AI</h2>
+                        <p class="carousel-item-description">Your personal AI study assistant. Get help with assignments, generate study plans, find resources, and receive personalized academic guidance.</p>
+                    </div>
+                    
+                    <!-- Slide 5: Resources -->
+                    <div class="carousel-item">
+                        <div class="carousel-item-image bg-yellow-100 text-yellow-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <h2 class="carousel-item-title">Access Learning Resources</h2>
+                        <p class="carousel-item-description">Discover and organize study materials, lecture notes, and recommended readings all in one place.</p>
+                    </div>
+                    
+                    <!-- Slide 6: Get Started -->
+                    <div class="carousel-item">
+                        <div class="carousel-item-image bg-blue-100 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="carousel-item-title">Ready to Ace Your Studies?</h2>
+                        <p class="carousel-item-description">You're all set to begin your journey with AceIt! Explore the dashboard and start organizing your academic life.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-controls">
+                <div class="carousel-indicators" id="carouselIndicators">
+                    <div class="carousel-indicator active"></div>
+                    <div class="carousel-indicator"></div>
+                    <div class="carousel-indicator"></div>
+                    <div class="carousel-indicator"></div>
+                    <div class="carousel-indicator"></div>
+                    <div class="carousel-indicator"></div>
+                </div>
+                
+                <button class="carousel-button" id="nextButton">Next</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Hide login view
+            document.getElementById('loginView').style.display = 'none';
+            
+            // Show dashboard view
+            document.getElementById('dashboardView').style.display = 'block';
+            
+            // Show onboarding overlay after a short delay
+            setTimeout(function() {
+                document.getElementById('onboardingOverlay').style.display = 'flex';
+            }, 500);
+        });
+        
+        // Carousel Functionality
+        const carouselInner = document.getElementById('carouselInner');
+        const carouselIndicators = document.getElementById('carouselIndicators').children;
+        const nextButton = document.getElementById('nextButton');
+        const closeOnboarding = document.getElementById('closeOnboarding');
+        let currentSlide = 0;
+        const totalSlides = carouselInner.children.length;
+        
+        // Update carousel position
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update indicators
+            for (let i = 0; i < carouselIndicators.length; i++) {
+                if (i === currentSlide) {
+                    carouselIndicators[i].classList.add('active');
+                } else {
+                    carouselIndicators[i].classList.remove('active');
+                }
+            }
+            
+            // Update button text for last slide
+            if (currentSlide === totalSlides - 1) {
+                nextButton.textContent = "Let's Begin!";
+            } else {
+                nextButton.textContent = "Next";
+            }
+        }
+        
+        // Next button click handler
+        nextButton.addEventListener('click', function() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateCarousel();
+            } else {
+                // Close onboarding on last slide
+                document.getElementById('onboardingOverlay').style.display = 'none';
+            }
+        });
+        
+        // Close button click handler
+        closeOnboarding.addEventListener('click', function() {
+            document.getElementById('onboardingOverlay').style.display = 'none';
+        });
+        
+        // Indicator click handlers
+        for (let i = 0; i < carouselIndicators.length; i++) {
+            carouselIndicators[i].addEventListener('click', function() {
+                currentSlide = i;
+                updateCarousel();
+            });
+        }
+        
+        // Initialize carousel
+        updateCarousel();
+        
+        // Customize Dashboard Button
+        document.querySelector('.customize-button').addEventListener('click', function() {
+            alert('This feature will allow you to personalize your dashboard layout and widgets!');
+        });
+    </script>
+  </body>
+</html>

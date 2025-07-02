@@ -1,0 +1,1003 @@
+<html>
+
+<head>
+  <title>AceIt! Assignments</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .assignment-card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .assignment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+      border-radius: 10px;
+      height: 10px;
+      transition: width 1s ease-in-out;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: #43A047;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #43A047;
+      font-weight: 600;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      background-color: #43A047;
+      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
+    }
+
+    .milestone-card {
+      border-left: 4px solid #43A047;
+      transition: all 0.3s ease;
+    }
+
+    .milestone-card:hover {
+      transform: translateX(5px);
+    }
+
+    .feedback-card {
+      border-left: 4px solid;
+      transition: all 0.3s ease;
+    }
+
+    .feedback-card:hover {
+      transform: translateX(5px);
+    }
+
+    .team-member {
+      transition: all 0.3s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-3px);
+    }
+
+    .assignment-details {
+      display: none;
+    }
+
+    .assignment-details.active {
+      display: block;
+    }
+
+    .feedback-expanded {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .feedback-expanded.show {
+      max-height: 500px;
+    }
+
+    .chevron-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .chevron-icon.rotated {
+      transform: rotate(180deg);
+    }
+
+    .notification-panel {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      width: 320px;
+      max-height: 400px;
+      overflow-y: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <!-- Logo and Navigation -->
+        <div class="flex items-center space-x-8">
+          <!-- Logo -->
+          <div class="logo-container">
+            <div class="logo">
+              <span>A</span>
+            </div>
+          </div>
+
+          <!-- Navigation Menu -->
+          <nav class="md:flex space-x-6">
+            <a href="index.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Home</a>
+            <a href="#" class="nav-link active text-gray-800 hover:text-gray-900 px-2 py-1">Assignments</a>
+            <a href="tasks.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Tasks</a>
+            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Calendar</a>
+            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Ace.AI</a>
+            <a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Resources</a>
+          </nav>
+        </div>
+
+        <!-- User Profile and Notifications -->
+        <div class="flex items-center space-x-6">
+          <div class="relative">
+            <button id="notificationBtn" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                </path>
+              </svg>
+              <span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            <!-- Notification Panel -->
+            <div id="notificationPanel" class="notification-panel">
+              <div class="p-4 border-b border-gray-200">
+                <h3 class="font-semibold text-lg">Notifications</h3>
+              </div>
+              <div class="p-2">
+                <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-blue-500">
+                  <p class="text-sm font-medium">Feedback on Marketing Assignment</p>
+                  <p class="text-xs text-gray-500">Dr. Johnson left feedback on your assignment</p>
+                  <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                </div>
+                <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-green-500">
+                  <p class="text-sm font-medium">Group Message: Project Team</p>
+                  <p class="text-xs text-gray-500">Alex: "I've uploaded the final presentation slides"</p>
+                  <p class="text-xs text-gray-400 mt-1">Yesterday</p>
+                </div>
+                <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-purple-500">
+                  <p class="text-sm font-medium">New Badge Unlocked!</p>
+                  <p class="text-xs text-gray-500">You've earned the "Early Submitter" badge</p>
+                  <p class="text-xs text-gray-400 mt-1">2 days ago</p>
+                </div>
+                <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-yellow-500">
+                  <p class="text-sm font-medium">Appraisal Rating</p>
+                  <p class="text-xs text-gray-500">You received an A on your Economics paper</p>
+                  <p class="text-xs text-gray-400 mt-1">3 days ago</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="text-right">
+              <p class="font-medium">Chloe Tan</p>
+              <p class="text-sm text-gray-500">Business Studies</p>
+            </div>
+            <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-gray-200">
+              <!-- Profile picture placeholder - replace with actual image -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-300" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
+                </path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">My Assignments</h1>
+      <div>
+        <button
+          class="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm mr-2 hover:bg-gray-50">
+          <span class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+              </path>
+            </svg>
+            Filter
+          </span>
+        </button>
+        <button class="bg-white border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+          <span class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+            </svg>
+            Sort
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column - Ongoing Assignments -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Ongoing Assignments</h2>
+
+          <!-- Group Project - Clickable -->
+          <div id="group-project-card"
+            class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4 cursor-pointer">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <div class="flex items-center">
+                  <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">Group Project</span>
+                  <span class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Marketing</span>
+                </div>
+                <h3 class="text-lg font-medium mt-2">Social Media Marketing Campaign</h3>
+              </div>
+              <span class="text-red-500 text-sm font-medium">Due in 3 days</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Develop a comprehensive social media marketing strategy for a new
+              product launch.</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600">Progress</span>
+                <span class="font-medium">65%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="progress-bar" style="width: 65%"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex -space-x-2">
+                <div
+                  class="h-8 w-8 rounded-full border-2 border-white bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                  JL</div>
+                <div
+                  class="h-8 w-8 rounded-full border-2 border-white bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+                  MT</div>
+                <div
+                  class="h-8 w-8 rounded-full border-2 border-white bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                  KW</div>
+                <div
+                  class="h-8 w-8 rounded-full border-2 border-white bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+                  CT</div>
+              </div>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">View Details</button>
+            </div>
+          </div>
+
+          <!-- Assignment 2 -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Economics</span>
+                <h3 class="text-lg font-medium mt-2">Market Analysis Report</h3>
+              </div>
+              <span class="text-orange-500 text-sm font-medium">Due in 5 days</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Analyze current market trends and provide recommendations for
+              strategic positioning.</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600">Progress</span>
+                <span class="font-medium">40%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="progress-bar" style="width: 40%"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">May 18, 2023</span>
+              </div>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Continue</button>
+            </div>
+          </div>
+
+          <!-- Assignment 3 -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Finance</span>
+                <h3 class="text-lg font-medium mt-2">Investment Portfolio Analysis</h3>
+              </div>
+              <span class="text-green-500 text-sm font-medium">Due in 10 days</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Create an investment portfolio and analyze its performance against
+              market benchmarks.</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600">Progress</span>
+                <span class="font-medium">20%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="progress-bar" style="width: 20%"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">May 23, 2023</span>
+              </div>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Continue</button>
+            </div>
+          </div>
+
+          <!-- Assignment 4 -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Management</span>
+                <h3 class="text-lg font-medium mt-2">Business Case Study</h3>
+              </div>
+              <span class="text-green-500 text-sm font-medium">Due in 14 days</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Analyze a business case and provide strategic recommendations for
+              operational improvement.</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600">Progress</span>
+                <span class="font-medium">10%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="progress-bar" style="width: 10%"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">May 27, 2023</span>
+              </div>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Continue</button>
+            </div>
+          </div>
+
+          <!-- Assignment 5 -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">Business Law</span>
+                <h3 class="text-lg font-medium mt-2">Corporate Governance Analysis</h3>
+              </div>
+              <span class="text-green-500 text-sm font-medium">Due in 18 days</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Analyze corporate governance structures and recommend best practices
+              for compliance.</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600">Progress</span>
+                <span class="font-medium">5%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="progress-bar" style="width: 5%"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">May 31, 2023</span>
+              </div>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submitted and Completed Assignments -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Submitted &amp; Completed Assignments</h2>
+
+          <!-- Completed Assignment 1 with expandable feedback -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Marketing</span>
+                <h3 class="text-lg font-medium mt-2">Brand Strategy Analysis</h3>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
+                </svg>
+                <span class="font-bold">A</span>
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm mb-2">Analyze a brand's marketing strategy and provide recommendations for
+              improvement.</p>
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">Completed on April 28</span>
+              </div>
+              <button class="feedback-toggle flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                View Feedback
+                <svg xmlns="http://www.w3.org/2000/svg" class="chevron-icon h-4 w-4 ml-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="feedback-expanded bg-gray-50 rounded-lg p-4 mt-2">
+              <div class="flex items-start mb-2">
+                <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                  <span class="text-blue-600 font-medium">DJ</span>
+                </div>
+                <div>
+                  <p class="font-medium">Dr. Johnson</p>
+                  <p class="text-xs text-gray-500">Marketing Department</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-700 mb-2">Excellent work on this brand analysis! Your insights on the target
+                demographic were particularly strong, and your recommendations for digital marketing strategies were
+                innovative and well-researched.</p>
+              <p class="text-sm text-gray-700">I especially appreciated your use of current market data to support your
+                conclusions. For future assignments, consider exploring more about the competitive landscape and how it
+                might impact your recommendations.</p>
+            </div>
+          </div>
+
+          <!-- Completed Assignment 2 with expandable feedback -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Economics</span>
+                <h3 class="text-lg font-medium mt-2">Economic Policy Analysis</h3>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
+                </svg>
+                <span class="font-bold">A-</span>
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm mb-2">Analyze economic policies and their impact on businesses in the
+              current market.</p>
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">Completed on April 15</span>
+              </div>
+              <button class="feedback-toggle flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                View Feedback
+                <svg xmlns="http://www.w3.org/2000/svg" class="chevron-icon h-4 w-4 ml-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="feedback-expanded bg-gray-50 rounded-lg p-4 mt-2">
+              <div class="flex items-start mb-2">
+                <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                  <span class="text-purple-600 font-medium">PL</span>
+                </div>
+                <div>
+                  <p class="font-medium">Prof. Lee</p>
+                  <p class="text-xs text-gray-500">Economics Department</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-700 mb-2">Very strong analysis of fiscal policy impacts. Your understanding of
+                monetary policy mechanisms is excellent, and your case studies were well chosen to illustrate key
+                points.</p>
+              <p class="text-sm text-gray-700">The paper could have been strengthened with more quantitative analysis of
+                policy outcomes. Consider incorporating more statistical evidence in future assignments to support your
+                qualitative observations.</p>
+            </div>
+          </div>
+
+          <!-- Submitted Assignment (Under Review) -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5 mb-4">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">Statistics</span>
+                <h3 class="text-lg font-medium mt-2">Data Analysis Project</h3>
+              </div>
+              <span class="text-yellow-600 font-medium text-sm">Under Review</span>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Analyze customer data and create visualizations to present findings
+              and strategic recommendations.</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600">Status</span>
+                <span class="font-medium text-yellow-600">Submitted</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">Submitted 2 days ago</span>
+              </div>
+              <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</button>
+            </div>
+          </div>
+
+          <!-- Completed Assignment 3 with expandable feedback -->
+          <div class="assignment-card bg-white border border-gray-200 rounded-lg p-5">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Finance</span>
+                <h3 class="text-lg font-medium mt-2">Financial Statement Analysis</h3>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
+                </svg>
+                <span class="font-bold">B+</span>
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm mb-2">Analyze financial statements and provide insights on company
+              performance and financial health.</p>
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-gray-500">Completed on March 30</span>
+              </div>
+              <button class="feedback-toggle flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                View Feedback
+                <svg xmlns="http://www.w3.org/2000/svg" class="chevron-icon h-4 w-4 ml-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="feedback-expanded bg-gray-50 rounded-lg p-4 mt-2">
+              <div class="flex items-start mb-2">
+                <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                  <span class="text-green-600 font-medium">RC</span>
+                </div>
+                <div>
+                  <p class="font-medium">Dr. Chen</p>
+                  <p class="text-xs text-gray-500">Finance Department</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-700 mb-2">Good work on the ratio analysis and cash flow assessment. Your
+                interpretation of the balance sheet was accurate and showed good understanding of financial principles.
+              </p>
+              <p class="text-sm text-gray-700">However, your analysis of long-term solvency could have been more
+                thorough. The recommendations section needed more specific actionable insights based on the financial
+                data. I encourage you to focus on connecting the financial metrics to strategic business decisions in
+                future assignments.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Upcoming Milestones and Feedback -->
+      <div class="lg:col-span-1">
+        <!-- Assignment Details Panel (initially hidden) -->
+        <div id="assignment-details" class="assignment-details bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-gray-800">Assignment Details</h2>
+            <button id="close-details" class="text-gray-400 hover:text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="mb-6">
+            <div class="flex items-center mb-2">
+              <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">Group Project</span>
+              <span class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Marketing</span>
+            </div>
+            <h3 class="text-lg font-medium">Social Media Marketing Campaign</h3>
+            <p class="text-sm text-gray-600 mt-2">Develop a comprehensive social media marketing strategy for a new
+              product launch, including content calendar, platform selection, and KPI measurement plan.</p>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="font-medium text-gray-800 mb-3">Team Members</h4>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="team-member flex items-center p-3 bg-gray-50 rounded-lg">
+                <div
+                  class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
+                  JL</div>
+                <div>
+                  <p class="font-medium">Jason Lee</p>
+                  <p class="text-xs text-gray-500">Content Strategy</p>
+                </div>
+              </div>
+              <div class="team-member flex items-center p-3 bg-gray-50 rounded-lg">
+                <div
+                  class="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center text-white font-bold mr-3">
+                  MT</div>
+                <div>
+                  <p class="font-medium">Maria Tan</p>
+                  <p class="text-xs text-gray-500">Analytics</p>
+                </div>
+              </div>
+              <div class="team-member flex items-center p-3 bg-gray-50 rounded-lg">
+                <div
+                  class="h-10 w-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold mr-3">
+                  KW</div>
+                <div>
+                  <p class="font-medium">Kevin Wong</p>
+                  <p class="text-xs text-gray-500">Creative Design</p>
+                </div>
+              </div>
+              <div class="team-member flex items-center p-3 bg-gray-50 rounded-lg">
+                <div
+                  class="h-10 w-10 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold mr-3">
+                  CT</div>
+                <div>
+                  <p class="font-medium">Chloe Tan</p>
+                  <p class="text-xs text-gray-500">Project Lead</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="font-medium text-gray-800 mb-3">Current Tasks</h4>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                  <input type="checkbox" class="h-4 w-4 text-blue-600 rounded mr-3">
+                  <span class="text-sm">Complete audience research report</span>
+                </div>
+                <span class="text-xs text-gray-500">Due tomorrow</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                  <input type="checkbox" class="h-4 w-4 text-blue-600 rounded mr-3" checked="">
+                  <span class="text-sm line-through text-gray-400">Platform selection analysis</span>
+                </div>
+                <span class="text-xs text-gray-500">Completed</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                  <input type="checkbox" class="h-4 w-4 text-blue-600 rounded mr-3">
+                  <span class="text-sm">Draft content calendar</span>
+                </div>
+                <span class="text-xs text-gray-500">Due in 2 days</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                  <input type="checkbox" class="h-4 w-4 text-blue-600 rounded mr-3">
+                  <span class="text-sm">Create KPI measurement framework</span>
+                </div>
+                <span class="text-xs text-gray-500">Due in 3 days</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-medium text-gray-800">Progress</h4>
+              <span class="font-medium">65%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+              <div class="progress-bar" style="width: 65%"></div>
+            </div>
+            <div class="flex justify-between">
+              <div class="flex items-center text-sm text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-gray-400" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                Due May 15, 2023
+              </div>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Team Chat</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Milestones -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Upcoming Milestones</h2>
+          <div class="space-y-3">
+            <div class="milestone-card bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Team Video Call</h3>
+                <span class="text-red-500 text-xs font-medium">Tomorrow</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Social Media Marketing Campaign</p>
+              <div class="flex items-center text-xs text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                10:00 AM - 11:30 AM
+              </div>
+            </div>
+
+            <div class="milestone-card bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Check-in with Dr. Johnson</h3>
+                <span class="text-orange-500 text-xs font-medium">In 2 days</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Market Analysis Report</p>
+              <div class="flex items-center text-xs text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                2:00 PM - 2:30 PM
+              </div>
+            </div>
+
+            <div class="milestone-card bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Draft Submission</h3>
+                <span class="text-orange-500 text-xs font-medium">In 3 days</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Social Media Marketing Campaign</p>
+              <div class="flex items-center text-xs text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Due by 11:59 PM
+              </div>
+            </div>
+
+            <div class="milestone-card bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Group Presentation</h3>
+                <span class="text-green-500 text-xs font-medium">In 7 days</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Social Media Marketing Campaign</p>
+              <div class="flex items-center text-xs text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                9:00 AM - 12:00 PM
+              </div>
+            </div>
+
+            <div class="milestone-card bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Final Submission</h3>
+                <span class="text-green-500 text-xs font-medium">In 10 days</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Market Analysis Report</p>
+              <div class="flex items-center text-xs text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Due by 11:59 PM
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Feedback -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Latest Feedback</h2>
+          <div class="space-y-3">
+            <div class="feedback-card border-blue-500 bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Dr. Johnson</h3>
+                <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">Marketing</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Social Media Marketing Campaign</p>
+              <p class="text-sm text-gray-700">Great progress on the audience research. Consider adding more demographic
+                data to strengthen your targeting strategy.</p>
+              <p class="text-xs text-gray-400 mt-1">2 days ago</p>
+            </div>
+
+            <div class="feedback-card border-purple-500 bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Prof. Lee</h3>
+                <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded-full">Economics</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Market Analysis Report</p>
+              <p class="text-sm text-gray-700">Your analysis of market trends is thorough. I'd like to see more
+                quantitative data to support your conclusions in the next draft.</p>
+              <p class="text-xs text-gray-400 mt-1">3 days ago</p>
+            </div>
+
+            <div class="feedback-card border-green-500 bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Dr. Chen</h3>
+                <span class="px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">Finance</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Investment Portfolio Analysis</p>
+              <p class="text-sm text-gray-700">Your risk assessment methodology is sound. For the next section, focus
+                more on diversification strategies across different market conditions.</p>
+              <p class="text-xs text-gray-400 mt-1">5 days ago</p>
+            </div>
+
+            <div class="feedback-card border-yellow-500 bg-white p-3 pl-4 rounded-lg shadow-sm">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-medium">Prof. Garcia</h3>
+                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded-full">Management</span>
+              </div>
+              <p class="text-sm text-gray-600 mb-1">Business Case Study</p>
+              <p class="text-sm text-gray-700">Excellent start on the SWOT analysis. Make sure to connect your findings
+                to specific strategic recommendations in your next update.</p>
+              <p class="text-xs text-gray-400 mt-1">1 week ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Notification Panel Toggle
+      const notificationBtn = document.getElementById('notificationBtn');
+      const notificationPanel = document.getElementById('notificationPanel');
+
+      notificationBtn.addEventListener('click', () => {
+        if (notificationPanel.style.display === 'block') {
+          notificationPanel.style.display = 'none';
+        } else {
+          notificationPanel.style.display = 'block';
+        }
+      });
+
+      // Close notification panel when clicking outside
+      document.addEventListener('click', (event) => {
+        if (!notificationBtn.contains(event.target) && !notificationPanel.contains(event.target)) {
+          notificationPanel.style.display = 'none';
+        }
+      });
+
+      // Group Project Card Click - Show Assignment Details
+      const groupProjectCard = document.getElementById('group-project-card');
+      const assignmentDetails = document.getElementById('assignment-details');
+      const closeDetails = document.getElementById('close-details');
+
+      groupProjectCard.addEventListener('click', () => {
+        assignmentDetails.classList.add('active');
+      });
+
+      closeDetails.addEventListener('click', () => {
+        assignmentDetails.classList.remove('active');
+      });
+
+      // Feedback Toggle
+      const feedbackToggles = document.querySelectorAll('.feedback-toggle');
+
+      feedbackToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          const feedbackContent = toggle.closest('.assignment-card').querySelector('.feedback-expanded');
+          const chevronIcon = toggle.querySelector('.chevron-icon');
+
+          if (feedbackContent.classList.contains('show')) {
+            feedbackContent.classList.remove('show');
+            chevronIcon.classList.remove('rotated');
+          } else {
+            feedbackContent.classList.add('show');
+            chevronIcon.classList.add('rotated');
+          }
+        });
+      });
+
+      // Navigation menu active state
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1312 @@
+<html>
+
+<head>
+	<title>AceIt! Assignments</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #f8f9fa;
+		}
+
+		.nav-link {
+			position: relative;
+			transition: all 0.3s ease;
+		}
+
+		.nav-link::after {
+			content: '';
+			position: absolute;
+			bottom: -4px;
+			left: 0;
+			width: 0;
+			height: 3px;
+			background-color: #43A047;
+			transition: width 0.3s ease;
+		}
+
+		.nav-link:hover::after {
+			width: 100%;
+		}
+
+		.nav-link.active {
+			color: #43A047;
+			font-weight: 600;
+		}
+
+		.nav-link.active::after {
+			width: 100%;
+		}
+
+		.logo-container {
+			display: flex;
+			align-items: center;
+		}
+
+		.logo {
+			background-color: #43A047;
+			border-radius: 8px;
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-weight: 700;
+			font-size: 20px;
+			box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
+		}
+
+		.notification-panel {
+			position: absolute;
+			top: 70px;
+			right: 20px;
+			width: 320px;
+			max-height: 400px;
+			overflow-y: auto;
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+			z-index: 100;
+			display: none;
+		}
+
+		.btn-primary {
+			background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+			transition: all 0.3s ease;
+		}
+
+		.btn-primary:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+		}
+
+		.btn-outline {
+			transition: all 0.3s ease;
+		}
+
+		.btn-outline:hover {
+			transform: translateY(-2px);
+		}
+
+		.progress-bar {
+			background: linear-gradient(90deg, #2196F3 0%, #1976D2 100%);
+			border-radius: 10px;
+			height: 8px;
+			transition: width 1s ease-in-out;
+		}
+
+		.gantt-chart {
+			overflow-x: auto;
+		}
+
+		.gantt-row {
+			height: 40px;
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.gantt-header {
+			height: 60px;
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.gantt-task-bar {
+			height: 24px;
+			border-radius: 12px;
+			position: absolute;
+			top: 8px;
+			transition: all 0.3s ease;
+		}
+
+		.gantt-task-bar:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.gantt-day {
+			width: 40px;
+			min-width: 40px;
+			text-align: center;
+			border-right: 1px solid #e5e7eb;
+		}
+
+		.gantt-day-header {
+			width: 40px;
+			min-width: 40px;
+			text-align: center;
+			border-right: 1px solid #e5e7eb;
+		}
+
+		.gantt-task-label {
+			width: 200px;
+			min-width: 200px;
+			padding-left: 16px;
+			border-right: 1px solid #e5e7eb;
+			display: flex;
+			align-items: center;
+		}
+
+		.kanban-column {
+			min-width: 280px;
+			max-height: 600px;
+			overflow-y: auto;
+		}
+
+		.kanban-card {
+			background: white;
+			border-radius: 8px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+			margin-bottom: 12px;
+			transition: all 0.3s ease;
+		}
+
+		.kanban-card:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.task-list-item {
+			transition: all 0.3s ease;
+		}
+
+		.task-list-item:hover {
+			background-color: #f9fafb;
+		}
+
+		.view-toggle-btn.active {
+			background-color: #2196F3;
+			color: white;
+		}
+
+		.breadcrumb-item {
+			display: flex;
+			align-items: center;
+		}
+
+		.breadcrumb-item:not(:last-child)::after {
+			content: '/';
+			margin: 0 0.5rem;
+			color: #9ca3af;
+		}
+
+		.breadcrumb-item:last-child {
+			color: #6b7280;
+			font-weight: 500;
+		}
+
+		/* Chat Modal Styles */
+		.modal-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0.5);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 50;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+		}
+
+		.modal-overlay.active {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.chat-modal {
+			width: 90%;
+			max-width: 800px;
+			height: 80vh;
+			background-color: white;
+			border-radius: 12px;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+			display: flex;
+			flex-direction: column;
+			transform: translateY(20px);
+			transition: all 0.3s ease;
+		}
+
+		.modal-overlay.active .chat-modal {
+			transform: translateY(0);
+		}
+
+		.chat-header {
+			padding: 16px 20px;
+			border-bottom: 1px solid #e5e7eb;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.chat-body {
+			flex: 1;
+			overflow-y: auto;
+			padding: 20px;
+		}
+
+		.chat-footer {
+			padding: 16px 20px;
+			border-top: 1px solid #e5e7eb;
+			display: flex;
+			align-items: center;
+		}
+
+		.message-container {
+			margin-bottom: 16px;
+		}
+
+		.message {
+			max-width: 70%;
+			padding: 12px 16px;
+			border-radius: 12px;
+			position: relative;
+			word-wrap: break-word;
+		}
+
+		.message-sent {
+			background-color: #2196F3;
+			color: white;
+			margin-left: auto;
+			border-bottom-right-radius: 4px;
+		}
+
+		.message-received {
+			background-color: #f3f4f6;
+			color: #1f2937;
+			border-bottom-left-radius: 4px;
+		}
+
+		.message-time {
+			font-size: 0.7rem;
+			margin-top: 4px;
+			opacity: 0.7;
+		}
+
+		.message-input {
+			flex: 1;
+			padding: 12px 16px;
+			border: 1px solid #e5e7eb;
+			border-radius: 24px;
+			margin: 0 12px;
+			transition: all 0.3s ease;
+		}
+
+		.message-input:focus {
+			outline: none;
+			border-color: #2196F3;
+			box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+		}
+
+		.send-button {
+			background-color: #2196F3;
+			color: white;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: all 0.3s ease;
+		}
+
+		.send-button:hover {
+			background-color: #1976D2;
+			transform: scale(1.05);
+		}
+
+		.attach-button {
+			color: #6b7280;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: all 0.3s ease;
+		}
+
+		.attach-button:hover {
+			background-color: #f3f4f6;
+			color: #2196F3;
+		}
+
+		.close-button {
+			color: #6b7280;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: all 0.3s ease;
+		}
+
+		.close-button:hover {
+			background-color: #f3f4f6;
+			color: #ef4444;
+		}
+
+		.chat-date-divider {
+			display: flex;
+			align-items: center;
+			margin: 24px 0;
+			color: #6b7280;
+		}
+
+		.chat-date-divider::before,
+		.chat-date-divider::after {
+			content: '';
+			flex: 1;
+			border-bottom: 1px solid #e5e7eb;
+		}
+
+		.chat-date-divider::before {
+			margin-right: 16px;
+		}
+
+		.chat-date-divider::after {
+			margin-left: 16px;
+		}
+
+		.file-attachment {
+			display: inline-flex;
+			align-items: center;
+			background-color: #f3f4f6;
+			border-radius: 8px;
+			padding: 8px 12px;
+			margin-top: 8px;
+			transition: all 0.3s ease;
+		}
+
+		.file-attachment:hover {
+			background-color: #e5e7eb;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="bg-white shadow-sm">
+		<div class="container mx-auto px-4 py-3">
+			<div class="flex justify-between items-center">
+				<!-- Logo and Navigation -->
+				<div class="flex items-center space-x-8">
+					<!-- Logo -->
+					<div class="logo-container">
+						<div class="logo">
+							<span>A</span>
+						</div>
+					</div>
+
+					<!-- Navigation Menu -->
+					<nav class="md:flex space-x-6">
+						<a href="index.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Home</a>
+						<a href="assignments.html" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Assignments</a>
+						<a href="#" class="nav-link active text-gray-800 hover:text-gray-900 px-2 py-1">Tasks</a>
+						<a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Calendar</a>
+						<a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Ace.AI</a>
+						<a href="#" class="nav-link text-gray-600 hover:text-gray-900 px-2 py-1">Resources</a>
+					</nav>
+				</div>
+
+				<!-- User Profile and Notifications -->
+				<div class="flex items-center space-x-6">
+					<div class="relative">
+						<button id="notificationBtn" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+								stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+								</path>
+							</svg>
+							<span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+						</button>
+
+						<!-- Notification Panel -->
+						<div id="notificationPanel" class="notification-panel">
+							<div class="p-4 border-b border-gray-200">
+								<h3 class="font-semibold text-lg">Notifications</h3>
+							</div>
+							<div class="p-2">
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-blue-500">
+									<p class="text-sm font-medium">Feedback on Marketing Assignment</p>
+									<p class="text-xs text-gray-500">Dr. Johnson left feedback on your assignment</p>
+									<p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+								</div>
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-green-500">
+									<p class="text-sm font-medium">Group Message: Project Team</p>
+									<p class="text-xs text-gray-500">Alex: "I've uploaded the final presentation slides"</p>
+									<p class="text-xs text-gray-400 mt-1">Yesterday</p>
+								</div>
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-purple-500">
+									<p class="text-sm font-medium">New Badge Unlocked!</p>
+									<p class="text-xs text-gray-500">You've earned the "Early Submitter" badge</p>
+									<p class="text-xs text-gray-400 mt-1">2 days ago</p>
+								</div>
+								<div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border-l-4 border-yellow-500">
+									<p class="text-sm font-medium">Appraisal Rating</p>
+									<p class="text-xs text-gray-500">You received an A on your Economics paper</p>
+									<p class="text-xs text-gray-400 mt-1">3 days ago</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex items-center space-x-3">
+						<div class="text-right">
+							<p class="font-medium">Chloe Tan</p>
+							<p class="text-sm text-gray-500">Business Studies</p>
+						</div>
+						<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-gray-200">
+							<!-- Profile picture placeholder - replace with actual image -->
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-300" viewBox="0 0 20 20"
+								fill="currentColor">
+								<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
+								</path>
+							</svg>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main class="container mx-auto px-4 py-6">
+		<!-- Breadcrumbs -->
+		<div class="flex mb-6">
+			<nav class="flex" aria-label="Breadcrumb">
+				<ol class="flex items-center space-x-1 text-sm">
+					<li class="breadcrumb-item">
+						<a href="index.html" class="text-blue-600 hover:text-blue-800">Home</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="assignments.html" class="text-blue-600 hover:text-blue-800">Assignments</a>
+					</li>
+					<li class="breadcrumb-item">
+						Social Media Marketing Campaign
+					</li>
+				</ol>
+			</nav>
+		</div>
+
+		<!-- Page Header -->
+		<div class="flex justify-between items-center mb-6">
+			<div>
+				<h1 class="text-2xl font-bold text-gray-800">Social Media Marketing Campaign</h1>
+				<p class="text-gray-600">Tasks and Timeline Management</p>
+			</div>
+			<div class="flex items-center space-x-3">
+				<span class="text-red-500 font-medium">Due in 3 days</span>
+				<button id="team-chat-btn" class="btn-primary text-white px-4 py-2 rounded-lg text-sm">Team Chat</button>
+			</div>
+		</div>
+
+		<!-- View Toggle Buttons -->
+		<div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+			<div class="flex justify-between items-center mb-6">
+				<div class="flex space-x-2">
+					<button id="gantt-view-btn" class="view-toggle-btn active px-4 py-2 rounded-lg text-sm font-medium">
+						<span class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+								stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2">
+								</path>
+							</svg>
+							Gantt Chart
+						</span>
+					</button>
+					<button id="kanban-view-btn"
+						class="view-toggle-btn px-4 py-2 rounded-lg text-sm font-medium border border-gray-300">
+						<span class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+								stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M4 6a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z">
+								</path>
+							</svg>
+							Kanban Board
+						</span>
+					</button>
+				</div>
+				<div>
+					<button
+						class="btn-outline border border-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+						<span class="flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+								stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+							</svg>
+							Add Task
+						</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- Gantt Chart View -->
+			<div id="gantt-view" class="gantt-chart">
+				<div class="flex gantt-header">
+					<div class="gantt-task-label font-medium">Task</div>
+					<!-- Days - May 8 to May 22 -->
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>8</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>9</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>10</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>11</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>12</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>13</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>14</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>15</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>16</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>17</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>18</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>19</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>20</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>21</div>
+					</div>
+					<div class="gantt-day-header flex flex-col justify-center">
+						<div class="text-xs text-gray-500">May</div>
+						<div>22</div>
+					</div>
+				</div>
+
+				<!-- Task 1 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Market Research</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Maria (Green) -->
+					<div class="gantt-task-bar bg-green-500 text-white text-xs flex items-center justify-center"
+						style="left: 200px; width: 120px;">
+						<span class="px-2 truncate">MT</span>
+					</div>
+				</div>
+
+				<!-- Task 2 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Audience Analysis</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Chloe (Yellow) -->
+					<div class="gantt-task-bar bg-yellow-500 text-white text-xs flex items-center justify-center"
+						style="left: 240px; width: 120px;">
+						<span class="px-2 truncate">CT</span>
+					</div>
+				</div>
+
+				<!-- Task 3 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Platform Selection</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Jason (Blue) -->
+					<div class="gantt-task-bar bg-blue-500 text-white text-xs flex items-center justify-center"
+						style="left: 320px; width: 80px;">
+						<span class="px-2 truncate">JL</span>
+					</div>
+				</div>
+
+				<!-- Task 4 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Content Strategy</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Jason (Blue) -->
+					<div class="gantt-task-bar bg-blue-500 text-white text-xs flex items-center justify-center"
+						style="left: 400px; width: 160px;">
+						<span class="px-2 truncate">JL</span>
+					</div>
+				</div>
+
+				<!-- Task 5 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Visual Design</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Kevin (Purple) -->
+					<div class="gantt-task-bar bg-purple-500 text-white text-xs flex items-center justify-center"
+						style="left: 440px; width: 120px;">
+						<span class="px-2 truncate">KW</span>
+					</div>
+				</div>
+
+				<!-- Task 6 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Content Calendar</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Chloe (Yellow) -->
+					<div class="gantt-task-bar bg-yellow-500 text-white text-xs flex items-center justify-center"
+						style="left: 400px; width: 120px;">
+						<span class="px-2 truncate">CT</span>
+					</div>
+				</div>
+
+				<!-- Task 7 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">KPI Framework</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - Maria (Green) -->
+					<div class="gantt-task-bar bg-green-500 text-white text-xs flex items-center justify-center"
+						style="left: 480px; width: 120px;">
+						<span class="px-2 truncate">MT</span>
+					</div>
+				</div>
+
+				<!-- Task 8 -->
+				<div class="flex gantt-row relative">
+					<div class="gantt-task-label">
+						<span class="text-sm">Final Report</span>
+					</div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<div class="gantt-day"></div>
+					<!-- Task bar - All team (Gray) -->
+					<div class="gantt-task-bar bg-gray-500 text-white text-xs flex items-center justify-center"
+						style="left: 560px; width: 40px;">
+						<span class="px-2 truncate">All</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Kanban Board View (Initially Hidden) -->
+			<div id="kanban-view" class="hidden">
+				<div class="flex space-x-4 overflow-x-auto pb-4">
+					<!-- Ideas Column -->
+					<div class="kanban-column bg-gray-50 p-4 rounded-lg">
+						<h3 class="font-medium text-gray-700 mb-4">Ideas</h3>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Influencer Partnerships</h4>
+							<p class="text-xs text-gray-600 mb-2">Research potential influencers for product promotion</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+									JL</div>
+								<span class="text-xs text-gray-500">Not started</span>
+							</div>
+						</div>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Video Content Series</h4>
+							<p class="text-xs text-gray-600 mb-2">Brainstorm ideas for educational video series</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
+									KW</div>
+								<span class="text-xs text-gray-500">Not started</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- To Do Column -->
+					<div class="kanban-column bg-gray-50 p-4 rounded-lg">
+						<h3 class="font-medium text-gray-700 mb-4">To Do</h3>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Content Calendar</h4>
+							<p class="text-xs text-gray-600 mb-2">Create a 3-month content calendar for all platforms</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+									CT</div>
+								<span class="text-xs text-gray-500">Due May 13</span>
+							</div>
+						</div>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">KPI Framework</h4>
+							<p class="text-xs text-gray-600 mb-2">Develop measurement framework for campaign success</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+									MT</div>
+								<span class="text-xs text-gray-500">Due May 14</span>
+							</div>
+						</div>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Visual Design</h4>
+							<p class="text-xs text-gray-600 mb-2">Create visual templates for social media posts</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
+									KW</div>
+								<span class="text-xs text-gray-500">Due May 14</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- In Progress Column -->
+					<div class="kanban-column bg-gray-50 p-4 rounded-lg">
+						<h3 class="font-medium text-gray-700 mb-4">In Progress</h3>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Audience Analysis</h4>
+							<p class="text-xs text-gray-600 mb-2">Analyze target demographics and create personas</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+									CT</div>
+								<span class="text-xs text-gray-500">75% complete</span>
+							</div>
+						</div>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Content Strategy</h4>
+							<p class="text-xs text-gray-600 mb-2">Develop content themes and messaging guidelines</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+									JL</div>
+								<span class="text-xs text-gray-500">50% complete</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Under Review Column -->
+					<div class="kanban-column bg-gray-50 p-4 rounded-lg">
+						<h3 class="font-medium text-gray-700 mb-4">Under Review</h3>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Market Research</h4>
+							<p class="text-xs text-gray-600 mb-2">Analyze competitors and market trends</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+									MT</div>
+								<span class="text-xs text-gray-500">Awaiting feedback</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Completed Column -->
+					<div class="kanban-column bg-gray-50 p-4 rounded-lg">
+						<h3 class="font-medium text-gray-700 mb-4">Completed</h3>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Platform Selection</h4>
+							<p class="text-xs text-gray-600 mb-2">Evaluate and select optimal social media platforms</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+									JL</div>
+								<span class="text-xs text-gray-500">Completed May 10</span>
+							</div>
+						</div>
+
+						<div class="kanban-card p-3">
+							<h4 class="font-medium text-sm mb-2">Project Setup</h4>
+							<p class="text-xs text-gray-600 mb-2">Create project structure and assign roles</p>
+							<div class="flex justify-between items-center">
+								<div
+									class="h-6 w-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+									CT</div>
+								<span class="text-xs text-gray-500">Completed May 8</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Detailed Tasks Listing -->
+		<div class="bg-white rounded-xl shadow-sm p-6">
+			<h2 class="text-xl font-semibold text-gray-800 mb-6">All Tasks</h2>
+
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead>
+						<tr>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task
+							</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Assigned To</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Start Date</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due
+								Date</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Progress</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Notes</th>
+							<th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Status</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						<!-- Task 1 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Audience Analysis</div>
+								<div class="text-xs text-gray-500">Analyze target demographics and create personas</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+										CT</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Chloe Tan</div>
+										<div class="text-xs text-gray-500">Project Lead</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 9, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">May 12, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 75%"></div>
+								</div>
+								<div class="text-xs text-gray-500">75% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Need to finalize the buyer personas</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In
+									Progress</span>
+							</td>
+						</tr>
+
+						<!-- Task 2 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Content Calendar</div>
+								<div class="text-xs text-gray-500">Create a 3-month content calendar for all platforms</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+										CT</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Chloe Tan</div>
+										<div class="text-xs text-gray-500">Project Lead</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 13, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-orange-500 font-medium">May 15, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 0%"></div>
+								</div>
+								<div class="text-xs text-gray-500">Not started</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Waiting for content strategy approval</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">To
+									Do</span>
+							</td>
+						</tr>
+
+						<!-- Task 3 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Market Research</div>
+								<div class="text-xs text-gray-500">Analyze competitors and market trends</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+										MT</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Maria Tan</div>
+										<div class="text-xs text-gray-500">Analytics</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 8, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 11, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 100%"></div>
+								</div>
+								<div class="text-xs text-gray-500">100% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Awaiting feedback from Dr. Johnson</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Under
+									Review</span>
+							</td>
+						</tr>
+
+						<!-- Task 4 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Content Strategy</div>
+								<div class="text-xs text-gray-500">Develop content themes and messaging guidelines</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+										JL</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Jason Lee</div>
+										<div class="text-xs text-gray-500">Content Strategy</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 10, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-orange-500 font-medium">May 14, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 50%"></div>
+								</div>
+								<div class="text-xs text-gray-500">50% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Working on messaging framework</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In
+									Progress</span>
+							</td>
+						</tr>
+
+						<!-- Task 5 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Platform Selection</div>
+								<div class="text-xs text-gray-500">Evaluate and select optimal social media platforms</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+										JL</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Jason Lee</div>
+										<div class="text-xs text-gray-500">Content Strategy</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 8, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 10, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-green-500 h-2.5 rounded-full" style="width: 100%"></div>
+								</div>
+								<div class="text-xs text-gray-500">100% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Selected Instagram, TikTok, and LinkedIn
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+							</td>
+						</tr>
+
+						<!-- Task 6 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Visual Design</div>
+								<div class="text-xs text-gray-500">Create visual templates for social media posts</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
+										KW</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Kevin Wong</div>
+										<div class="text-xs text-gray-500">Creative Design</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 11, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-orange-500 font-medium">May 14, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 0%"></div>
+								</div>
+								<div class="text-xs text-gray-500">Not started</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Waiting for brand guidelines approval</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">To
+									Do</span>
+							</td>
+						</tr>
+
+						<!-- Task 7 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">KPI Framework</div>
+								<div class="text-xs text-gray-500">Develop measurement framework for campaign success</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+										MT</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Maria Tan</div>
+										<div class="text-xs text-gray-500">Analytics</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 12, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-orange-500 font-medium">May 14, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 0%"></div>
+								</div>
+								<div class="text-xs text-gray-500">Not started</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Will start after market research approval
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">To
+									Do</span>
+							</td>
+						</tr>
+
+						<!-- Task 8 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Final Report</div>
+								<div class="text-xs text-gray-500">Compile all components into final campaign strategy</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div class="flex -space-x-2">
+										<div
+											class="h-8 w-8 rounded-full border-2 border-white bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+											JL</div>
+										<div
+											class="h-8 w-8 rounded-full border-2 border-white bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+											MT</div>
+										<div
+											class="h-8 w-8 rounded-full border-2 border-white bg-purple-500 flex items-center justify-center text-white text-xs font-bold">
+											KW</div>
+										<div
+											class="h-8 w-8 rounded-full border-2 border-white bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+											CT</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 14, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">May 15, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="progress-bar" style="width: 0%"></div>
+								</div>
+								<div class="text-xs text-gray-500">Not started</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Final team collaboration</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">To
+									Do</span>
+							</td>
+						</tr>
+
+						<!-- Task 9 -->
+						<tr class="task-list-item">
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="text-sm font-medium text-gray-900">Project Setup</div>
+								<div class="text-xs text-gray-500">Create project structure and assign roles</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div
+										class="h-8 w-8 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs font-bold">
+										CT</div>
+									<div class="ml-2">
+										<div class="text-sm font-medium text-gray-900">Chloe Tan</div>
+										<div class="text-xs text-gray-500">Project Lead</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 8, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 8, 2023</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+									<div class="bg-green-500 h-2.5 rounded-full" style="width: 100%"></div>
+								</div>
+								<div class="text-xs text-gray-500">100% complete</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Project structure established</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+	
+</body>
+
+</html>
